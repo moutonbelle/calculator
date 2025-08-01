@@ -18,8 +18,14 @@ let result = null;
 // Calculator state
 let readyForNewNumber = true;
 let readyFor = "a";
+let hasPoint = false;
 
 const display = document.querySelector("#display p");
+
+function newNumber () {
+    readyForNewNumber = true;
+    hasPoint = false;
+}
 
 function pressNumber (e) {    
     switch (readyFor) {
@@ -28,7 +34,11 @@ function pressNumber (e) {
         case "a":
         case "b":
             if (readyForNewNumber === true) display.textContent = "";
-            display.textContent += e.target.textContent;
+            if (e.target.id === "point" && !hasPoint) {
+                display.textContent += (display.textContent === "") ? "0" + e.target.textContent : e.target.textContent;
+                hasPoint = true;
+            }
+            if (e.target.id !== "point") display.textContent += e.target.textContent;
             readyForNewNumber = false;
             break;
     }
@@ -52,7 +62,7 @@ function pressEquals (e) {
             display.textContent = result;
             a = result;
             readyFor = "a";
-            readyForNewNumber = true;
+            newNumber();
     }
 }
 
@@ -62,11 +72,11 @@ function pressOperator (e) {
             a = display.textContent;
             operator = e.target.textContent;
             readyFor = "operator";
-            readyForNewNumber = true;
+            newNumber();
             break;
         case "operator":
             operator = e.target.textContent;
-            readyForNewNumber = true;
+            newNumber();
             break;
         case "b":
             b = display.textContent;
@@ -75,7 +85,7 @@ function pressOperator (e) {
             a = result;     
             operator = e.target.textContent;
             readyFor = "operator";
-            readyForNewNumber = true;   
+            newNumber();   
             break;
     }
 }
@@ -86,8 +96,9 @@ function pressClear () {
     b = null;
     operator = null;
     result = null;
-    readyForNewNumber = true;
+    newNumber();
     readyFor = "a";
+    hasPoint = false;
 }
 
 document.querySelectorAll("#number-pad button").forEach(button => {
