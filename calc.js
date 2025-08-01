@@ -101,6 +101,22 @@ function pressClear () {
     hasPoint = false;
 }
 
+function pressBackspace () {
+    switch (readyFor) {
+        case "a":
+        case "b":
+            if (display.textContent[display.textContent.length-1] === ".") hasPoint = false;
+            if (display.textContent.length > 0) display.textContent = display.textContent.slice(0, -1);
+            if (display.textContent === "") {
+                display.textContent = 0;
+                newNumber();
+            }
+            break;
+        case "operator":
+            break;
+    }
+}
+
 document.querySelectorAll("#number-pad button").forEach(button => {
     button.addEventListener("click", pressNumber);
 });
@@ -111,3 +127,5 @@ document.querySelectorAll("#operators button").forEach(button => {
 });
 
 document.querySelector("#clear").addEventListener("click", pressClear);
+
+document.querySelector("#backspace").addEventListener("click", pressBackspace);
