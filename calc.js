@@ -80,6 +80,16 @@ function pressOperator (e) {
     }
 }
 
+function pressClear () {
+    display.textContent = 0;
+    a = null;
+    b = null;
+    operator = null;
+    result = null;
+    readyForNewNumber = true;
+    readyFor = "a";
+}
+
 document.querySelectorAll("#number-pad button").forEach(button => {
     button.addEventListener("click", pressNumber);
 });
@@ -88,3 +98,5 @@ document.querySelectorAll("#operators button").forEach(button => {
     if (button.id === "equals") button.addEventListener("click", pressEquals);
     else button.addEventListener("click", pressOperator);
 });
+
+document.querySelector("#clear").addEventListener("click", pressClear);
