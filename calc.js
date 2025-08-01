@@ -1,10 +1,12 @@
 function operate (a, b, operator) {
+    let result;
     switch (operator) {
-        case "+": return a+b;
-        case "-": return a-b;
-        case "*": return a*b;
-        case "/": return a/b;
+        case "+": result = a+b; break;
+        case "-": result = a-b; break;
+        case "*": result = a*b; break;
+        case "/": result = a/b; break;
     }
+    return Math.round(result * 10 ** 5) / 10 ** 5;
 }
 
 // Data
@@ -42,6 +44,7 @@ function pressEquals (e) {
             }
             break;
         case "operator":
+            readyFor = "a";
             break;
         case "b":
             b = display.textContent;
@@ -70,29 +73,12 @@ function pressOperator (e) {
             result = operate(Number(a), Number(b), operator);
             display.textContent = result;
             a = result;     
+            operator = e.target.textContent;
             readyFor = "operator";
             readyForNewNumber = true;   
             break;
     }
 }
-
-
-//     if (aSet === false) {
-//         a = display.textContent;
-//         aSet = true;
-//         operator = e.target.textContent;
-//         readyForNewNumber = true;
-//     }
-//     else {
-//         b = display.textContent;
-//         bSet = true;
-//         result = operate(Number(a), Number(b), operator);
-//         display.textContent = result;
-//         a = result;
-//         operator = e.target.textContent;
-//         readyForNewNumber = true;        
-//     }
-// }
 
 document.querySelectorAll("#number-pad button").forEach(button => {
     button.addEventListener("click", pressNumber);
@@ -102,25 +88,3 @@ document.querySelectorAll("#operators button").forEach(button => {
     if (button.id === "equals") button.addEventListener("click", pressEquals);
     else button.addEventListener("click", pressOperator);
 });
-
-/*
-
-STATES
-
--- Beginning
--- Entering a
-    -- first number clears and adds number
-    -- subsequent numbers add number
-    -- operator sets operator and switches state to entering operator
-    -- equals does nothing
-    -- clear clears
--- Entering operator
-    -- first number clears result and sets state to entering b and sets operator
-    -- operator changes operator and does nothing else
-    -- equals does nothing
--- Entering b
-    -- operator calculates result and displays it, sets a to result, sets state to entering operator
-    -- numbers add number
-    -- equals calculates result and displays it, sets a to result, sets state to entering a
-
-*/
